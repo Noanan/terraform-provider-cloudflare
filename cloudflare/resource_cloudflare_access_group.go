@@ -310,16 +310,14 @@ func BuildAccessGroupCondition(options map[string]interface{}) []interface{} {
 				}})
 			}
 		} else if accessGroupType == "external_evaluation" {
-			for _, v := range values.([]interface{}) {
-				eeCfg := v.(map[string]interface{})
-				group = append(group, cloudflare.AccessGroupExternalEvaluation{ExternalEvaluation: struct {
-					EvaluateURL string `json:"evaluate_url"`
-					KeysURL     string `json:"keys_url"`
-				}{
-					EvaluateURL: eeCfg["evaluate_url"].(string),
-					KeysURL:     eeCfg["keys_url"].(string),
-				}})
-			}
+			eeCfg := values.(map[string]interface{})
+			group = append(group, cloudflare.AccessGroupExternalEvaluation{ExternalEvaluation: struct {
+				EvaluateURL string `json:"evaluate_url"`
+				KeysURL     string `json:"keys_url"`
+			}{
+				EvaluateURL: eeCfg["evaluate_url"].(string),
+				KeysURL:     eeCfg["keys_url"].(string),
+			}})
 		} else {
 			for _, value := range values.([]interface{}) {
 				switch accessGroupType {
@@ -572,12 +570,12 @@ func TransformAccessGroupForSchema(accessGroup []interface{}) []map[string]inter
 
 	if externalEvaluationURL != "" && externalEvaluationKeysURL != "" {
 		data = append(data, map[string]interface{}{
-			"external_evaluation": []interface{}{
-				map[string]interface{}{
-					"evaluate_url": externalEvaluationURL,
-					"keys_url":     externalEvaluationKeysURL,
-				}},
+			"external_evaluation": map[string]interface{}{
+				"evaluate_url": externalEvaluationURL,
+				"keys_url":     externalEvaluationKeysURL,
+			},
 		})
+
 	}
 	if len(groups) > 0 {
 		data = append(data, map[string]interface{}{
