@@ -93,6 +93,10 @@ var AccessGroupOptionSchemaElement = &schema.Resource{
 			Type:     schema.TypeString,
 			Optional: true,
 		},
+		// "external_evaluation": {
+		// 	Type:     schema.TypeString,
+		// 	Optional: true,
+		// },
 		"auth_method": {
 			Type:     schema.TypeString,
 			Optional: true,
@@ -116,6 +120,22 @@ var AccessGroupOptionSchemaElement = &schema.Resource{
 			Optional: true,
 			Elem: &schema.Schema{
 				Type: schema.TypeString,
+			},
+		},
+		"external_evaluation": {
+			Type:     schema.TypeList,
+			Optional: true,
+			Elem: &schema.Resource{
+				Schema: map[string]*schema.Schema{
+					"evaluate_url": {
+						Type:     schema.TypeString,
+						Optional: true,
+					},
+					"keys_url": {
+						Type:     schema.TypeString,
+						Optional: true,
+					},
+				},
 			},
 		},
 		"gsuite": {
